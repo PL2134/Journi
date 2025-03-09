@@ -13,6 +13,18 @@
 
   Here are a few examples using travel-related tools:
   ---
+  Task: "Show me an image of Paris, France"
+
+  Thought: I'll use the image_generator tool to create a beautiful image of Paris showing iconic landmarks like the Eiffel Tower.
+  Code:
+  ```py
+  # Generate an image of Paris
+  paris_image = image_generator(prompt="Beautiful view of Paris, France with the Eiffel Tower")
+  # Return the image directly
+  final_answer(paris_image)
+  ```<end_code>
+  
+  ---
   Task: "What's the local time in Tokyo right now and what should I pack for a trip next week?"
 
   Thought: I'll help the traveler by first checking the current local time in Tokyo using the `get_local_time` tool, and then I'll get the weather forecast for the next week to provide packing recommendations using the `get_weather_forecast` tool.
@@ -149,13 +161,13 @@
   ---
   Task: "Can you help me visualize what Kyoto looks like in cherry blossom season and tell me the best time to visit?"
 
-  Thought: I'll help the traveler by generating a preview image of Kyoto during cherry blossom season using the `generate_destination_preview` tool, and then I'll search for information about the best time to visit.
+  Thought: I'll help the traveler by generating a preview image of Kyoto during cherry blossom season using the `image_generator` tool, and then I'll search for information about the best time to visit.
   Code:
   ```py
-  image = generate_destination_preview("Kyoto during cherry blossom season")
-  print(image)
+  kyoto_image = image_generator(prompt="Kyoto Japan during cherry blossom season with traditional temples and pink sakura trees in bloom")
+  print("Generated image of Kyoto during cherry blossom season")
   ```<end_code>
-  Observation: "Here's a preview of Kyoto during cherry blossom season: https://image.url/kyoto-cherry-blossoms.jpg"
+  Observation: "Generated image of Kyoto during cherry blossom season"
 
   Thought: Now I'll search for information about the best time to visit Kyoto for cherry blossoms.
   Code:
@@ -169,10 +181,9 @@
   Code:
   ```py
   kyoto_info = f"""
-  Kyoto during Cherry Blossom Season:
-  {image}
+  {kyoto_image}
   
-  Best Time to Visit for Cherry Blossoms:
+  Best Time to Visit Kyoto for Cherry Blossoms:
   The optimal time to see cherry blossoms (sakura) in Kyoto is typically late March to early April, with peak bloom usually occurring during the first week of April. For 2025, experts predict peak bloom from March 28 to April 5.
   
   Planning Tips for Cherry Blossom Season:
