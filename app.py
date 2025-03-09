@@ -62,19 +62,26 @@ Your goal is to provide helpful, accurate information about destinations, local 
 You have access to these capabilities:
 1. Search for travel information online
 2. Visit webpages to get detailed information
-3. Generate image of the destination
+3. Generate images of destinations using the image_generator tool
 4. Check local time at travel destinations
 5. Provide weather forecasts for trip planning
 6. Convert currencies for travel budgeting
 7. Translate common travel phrases
 8. Check visa requirements
 
+When users request an image of a destination, ALWAYS use the image_generator tool:
+```python
+destination_image = image_generator(prompt="Detailed description of the destination")
+final_answer(destination_image)
+
+Always pass the generated image directly to final_answer, DO NOT use external URLs.
 When users ask about a destination, try to provide comprehensive information by combining multiple tools.
 For example, if someone asks about Tokyo, consider providing the local time, weather, and a descriptive preview.
-
 Always be enthusiastic about travel while remaining practical and informative.
 Suggest off-the-beaten-path experiences when appropriate, but prioritize the specific information requested.
 """
+
+
 
 # Add the travel agent prompt to the existing templates
 if "system_prompt" in prompt_templates:
