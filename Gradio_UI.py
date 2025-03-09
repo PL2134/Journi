@@ -162,18 +162,25 @@ def stream_to_gradio(
             content=f"**Final answer:**\n{final_answer.to_string()}\n",
         )
     elif isinstance(final_answer, AgentImage):
+        # Handle image display with proper path formatting
+        image_path = final_answer.to_string()
         yield gr.ChatMessage(
             role="assistant",
-            content={"path": final_answer.to_string(), "mime_type": "image/png"},
+            content={"path": image_path, "mime_type": "image/png"},
         )
     elif isinstance(final_answer, AgentAudio):
         yield gr.ChatMessage(
             role="assistant",
             content={"path": final_answer.to_string(), "mime_type": "audio/wav"},
         )
+    # Handle string paths that look like image paths
+    elif isinstance(final_answer, str) and ('/tmp/gradio/' in final_answer or final_answer.endswith(('.png', '.jpg', '.jpeg', '.webp'))):
+        yield gr.ChatMessage(
+            role="assistant",
+            content={"path": final_answer, "mime_type": "image/png"},
+        )
     else:
         yield gr.ChatMessage(role="assistant", content=f"**Final answer:** {str(final_answer)}")
-
 
 class GradioUI:
     """A one-line interface to launch your agent in Gradio"""
