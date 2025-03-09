@@ -18,4 +18,5 @@ class FinalAnswerTool(Tool):
         return answer
 
     def __init__(self, *args, **kwargs):
+        super().__init__()  # This is what was missing
         self.is_initialized = False
