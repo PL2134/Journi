@@ -2,7 +2,7 @@
 # This agent helps travelers with destination information, local time, weather forecasts,
 # currency conversion, language translation, and destination previews.
 
-from smolagents import CodeAgent, HfApiModel, load_tool
+from smolagents import CodeAgent, HfApiModel, load_tool, Tool, tool
 import datetime
 import yaml
 import os
@@ -11,7 +11,6 @@ import os
 from tools.final_answer import FinalAnswerTool
 from tools.web_search import DuckDuckGoSearchTool
 from tools.visit_webpage import VisitWebpageTool
-from tools.generate_destination_preview import GenerateDestinationPreviewTool
 from tools.get_local_time import GetLocalTimeTool
 from tools.get_weather_forecast import GetWeatherForecastTool
 from tools.convert_currency import ConvertCurrencyTool
@@ -25,7 +24,6 @@ from Gradio_UI import GradioUI
 final_answer = FinalAnswerTool()
 web_search = DuckDuckGoSearchTool(max_results=5)  # Limit results for better readability
 visit_webpage = VisitWebpageTool()
-generate_destination_preview = GenerateDestinationPreviewTool()
 get_local_time = GetLocalTimeTool()
 get_weather_forecast = GetWeatherForecastTool()
 convert_currency = ConvertCurrencyTool()
@@ -64,7 +62,7 @@ Your goal is to provide helpful, accurate information about destinations, local 
 You have access to these capabilities:
 1. Search for travel information online
 2. Visit webpages to get detailed information
-3. Provide vivid descriptions of travel destinations
+3. Generate image of the destination
 4. Check local time at travel destinations
 5. Provide weather forecasts for trip planning
 6. Convert currencies for travel budgeting
@@ -84,6 +82,13 @@ if "system_prompt" in prompt_templates:
 else:
     prompt_templates["system_prompt"] = travel_agent_prompt
 
+# Import the image generation tool directly from the Space
+image_generation_tool = Tool.from_space(
+    "black-forest-labs/FLUX.1-schnell",
+    name="image_generator",
+    description="Generate an image from a text prompt. The prompt should be detailed to create high-quality images."
+)
+
 # Agent setup with all travel tools
 agent = CodeAgent(
     model=model,
@@ -91,7 +96,7 @@ agent = CodeAgent(
         final_answer,
         web_search,
         visit_webpage,
-        generate_destination_preview,
+        image_generation_tool,
         get_local_time,
         get_weather_forecast,
         convert_currency,
